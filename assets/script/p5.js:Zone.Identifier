@@ -1,0 +1,4 @@
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=https://p5js.org/download/
+HostUrl=https://github-production-release-asset-2e65be.s3.amazonaws.com/8424040/c0ec3b80-cc3d-11ea-88f8-6826bcc446ef?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20201202%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20201202T192749Z&X-Amz-Expires=300&X-Amz-Signature=c9b72191390492fadffe7708a9bec2f65ef06ee1f6102f7448cc1c708713c8cb&X-Amz-SignedHeaders=host&actor_id=54759776&key_id=0&repo_id=8424040&response-content-disposition=attachment%3B%20filename%3Dp5.js&response-content-type=application%2Foctet-stream
