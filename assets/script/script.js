@@ -50,55 +50,69 @@ const player = function() {
 
 	if (!plgr) { plvely += 0.2; }
 
-	//Move player based on keyboard inputs
-	if (plgr && (keys["32"] || keys["87"])) {
-		plvely -=7;
-		plgr = false;
-	}
-	if (keys["65"] && !keys["68"]) {
-		plvelx -= 1.5;
-	}
-	if (keys["68"] && !keys["65"]) {
-		plvelx += 1.5;
-	}
 
-	if (plvelx > 0 || plvelx < 0) {
-		plvelx = plvelx / 1.25;
-	}
 
 	plgr = false;
 	for (let hitbox of colliders) {
 
-		if (ply + 50 > hitbox[1] && ply < hitbox[1] + 50) {
-			if (plx + 50 > hitbox[0] && plx < hitbox[0] + 50) {
-				plgr = true;
-				if (plx < hitbox[0] + 25) {
+		//CHECK MATH
 
-				}
-				else {
-
-				}
-
-				if (ply < hitbox[1] + 25) {
-					ply = hitbox[1] - 50;
-					plvely = 0;
-				}
-				else {
-
-				}
-			}
+		if (plx + 50 > hitbox[0] && plx + 50 < hitbox[0] + 25 && ply < hitbox[1] + 50 && ply + 50 > hitbox[1]) {
+			plvelx = -1.5;
 		}
+		if (plx < hitbox[0] + 50 && plx > hitbox[0] + 25 && ply < hitbox[1] + 50 && ply + 50 > hitbox[1]) {
+			plvelx = 1.5;
+		}
+		if (ply + 50 > hitbox[1] && ply + 50 < hitbox[1] + 25 && plx < hitbox[0] + 50 && plx + 50 > hitbox[0]) {
+			//ply = hitbox[1] - 50;
+			plvely = 0;
+			plgr = true;
+		}
+		if (ply < hitbox[1] + 50 && ply > hitbox[1] + 25 && plx < hitbox[0] + 50 && plx + 50 > hitbox[0]) {
+			//ply = hitbox[1] + 50;
+			plvely = 2;
+			plgr = false;
+		}
+
+
+		// if (ply + 50 > hitbox[1] && ply < hitbox[1] + 50) {
+		// 	if (plx + 50 > hitbox[0] && plx < hitbox[0] + 50) {
+
+		// 		if (plx + 25 < hitbox[0] + 25) {
+		// 			plx = plx - hitbox[0]/50;
+		// 		}
+		// 		else if (plx + 25 > hitbox[0] + 25) {
+
+		// 		}
+		// 		else if (ply + 25 < hitbox[1] + 25) {
+		// 		}
+		// 		else {
+		// 		}
+					
+		// 	}
+		// }
 	}
+
+		//Move player based on keyboard inputs
+		if (plgr && (keys["32"] || keys["87"])) {
+			plvely -=7;
+			plgr = false;
+		}
+		if (keys["65"] && !keys["68"]) {
+			plvelx -= 1.5;
+		}
+		if (keys["68"] && !keys["65"]) {
+			plvelx += 1.5;
+		}
+	
+		if (plvelx > 0 || plvelx < 0) {
+			plvelx = plvelx / 1.25;
+		}
 	
 	ply += plvely;
 	plx += plvelx;
-
-	checkcollide(plx, ply);
 }
 
-const checkcollide = function(x, y) {
-	
-}
 
 const renderlvl = function(map) {
 	for (let y = 0; y < map.length; y++) {
