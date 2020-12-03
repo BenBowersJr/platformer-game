@@ -4,7 +4,7 @@ plvelx = 0;
 plvely = 0;
 currlvl = undefined;
 
-
+// Check for key's being pressed
 window.document.addEventListener("keydown", (event) => {
 	console.log(event.key);
 })
