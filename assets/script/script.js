@@ -11,24 +11,6 @@ var keys = {};
 window.onkeyup = function(e) { keys[e.keyCode] = false; }
 window.onkeydown = function(e) { keys[e.keyCode] = true; }
 
-// // Check for key's being pressed
-// window.document.addEventListener("keydown", (event) => {
-// 	switch (event.key) {
-// 		case "w":
-// 			if (plgr) {
-// 				plvely -=5;
-// 				plgr = false;
-// 			}
-// 			break;
-// 			case "a":
-// 				plvelx -=2;
-// 				break;
-// 			case "d":
-// 				plvelx +=2;
-// 				break;
-// 	}
-// })
-
 function setup() {
 	createCanvas(1000, 600);
 	background("black");
@@ -70,43 +52,34 @@ const player = function() {
 
 	//Move player based on keyboard inputs
 	if (plgr && (keys["32"] || keys["87"])) {
-		plvely -=6;
+		plvely -=7;
 		plgr = false;
 	}
 	if (keys["65"] && !keys["68"]) {
-		plvelx -= 0.4;
+		plvelx -= 1.5;
 	}
 	if (keys["68"] && !keys["65"]) {
-		plvelx += 0.4;
+		plvelx += 1.5;
 	}
-	
-	ply += plvely;
-	plx += plvelx;
 
-	checkcollide(plx, ply);
-}
+	if (plvelx > 0 || plvelx < 0) {
+		plvelx = plvelx / 1.25;
+	}
 
-const checkcollide = function(x, y) {
+	plgr = false;
 	for (let hitbox of colliders) {
-		console.log(plgr);
-		if (x + 50 > hitbox[0] && x < hitbox[0] + 50) {
-			if (y + 50 >= hitbox[1] && y < hitbox[1] + 50) {
+
+		if (ply + 50 > hitbox[1] && ply < hitbox[1] + 50) {
+			if (plx + 50 > hitbox[0] && plx < hitbox[0] + 50) {
 				plgr = true;
-			}
-			else plgr = false;
-		}
-
-
-		if (y + 50 > hitbox[1] && y < hitbox[1] + 50) {
-			if (x + 50 > hitbox[0] && x < hitbox[0] + 50) {
-				if (x < hitbox[0] + 25) {
+				if (plx < hitbox[0] + 25) {
 
 				}
 				else {
 
 				}
 
-				if (y < hitbox[1] + 25) {
+				if (ply < hitbox[1] + 25) {
 					ply = hitbox[1] - 50;
 					plvely = 0;
 				}
@@ -116,6 +89,15 @@ const checkcollide = function(x, y) {
 			}
 		}
 	}
+	
+	ply += plvely;
+	plx += plvelx;
+
+	checkcollide(plx, ply);
+}
+
+const checkcollide = function(x, y) {
+	
 }
 
 const renderlvl = function(map) {
