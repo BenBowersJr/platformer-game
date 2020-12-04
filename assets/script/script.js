@@ -179,6 +179,16 @@ const renderlvl = function(map) {
 }
 
 
+// KEY
+// - = Background
+// S = Player Spawnpoint
+// Z = Invisible Barrier
+// T = Tree
+// C = Cloud
+// 0 = Grass
+// 1 = Dirt
+// 2 = Stone
+
 let levels = {
 	l1: [
 		"-Z--------------------------------------------------------------------------------------------------------------------",
