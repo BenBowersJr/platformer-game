@@ -50,64 +50,47 @@ const player = function() {
 
 	if (!plgr) { plvely += 0.2; }
 
-
-
-	plgr = false;
-	for (let hitbox of colliders) {
-
-		//CHECK MATH
-
-		if (plx + 50 > hitbox[0] && plx + 50 < hitbox[0] + 25 && ply < hitbox[1] + 50 && ply + 50 > hitbox[1]) {
-			plvelx = -1.5;
-		}
-		if (plx < hitbox[0] + 50 && plx > hitbox[0] + 25 && ply < hitbox[1] + 50 && ply + 50 > hitbox[1]) {
-			plvelx = 1.5;
-		}
-		if (ply + 50 > hitbox[1] && ply + 50 < hitbox[1] + 25 && plx < hitbox[0] + 50 && plx + 50 > hitbox[0]) {
-			//ply = hitbox[1] - 50;
-			plvely = 0;
-			plgr = true;
-		}
-		if (ply < hitbox[1] + 50 && ply > hitbox[1] + 25 && plx < hitbox[0] + 50 && plx + 50 > hitbox[0]) {
-			//ply = hitbox[1] + 50;
-			plvely = 2;
-			plgr = false;
-		}
-
-
-		// if (ply + 50 > hitbox[1] && ply < hitbox[1] + 50) {
-		// 	if (plx + 50 > hitbox[0] && plx < hitbox[0] + 50) {
-
-		// 		if (plx + 25 < hitbox[0] + 25) {
-		// 			plx = plx - hitbox[0]/50;
-		// 		}
-		// 		else if (plx + 25 > hitbox[0] + 25) {
-
-		// 		}
-		// 		else if (ply + 25 < hitbox[1] + 25) {
-		// 		}
-		// 		else {
-		// 		}
-					
-		// 	}
-		// }
+	//Move player based on keyboard inputs
+	if (plgr && (keys["32"] || keys["87"])) {
+		plvely -=7;
+		plgr = false;
+	}
+	if (keys["65"] && !keys["68"]) {
+		plvelx -= 1.5;
+	}
+	if (keys["68"] && !keys["65"]) {
+		plvelx += 1.5;
 	}
 
-		//Move player based on keyboard inputs
-		if (plgr && (keys["32"] || keys["87"])) {
-			plvely -=7;
-			plgr = false;
-		}
-		if (keys["65"] && !keys["68"]) {
-			plvelx -= 1.5;
-		}
-		if (keys["68"] && !keys["65"]) {
-			plvelx += 1.5;
-		}
+	if (plvelx > 0 || plvelx < 0) {
+		plvelx = plvelx / 1.25;
+	}
 	
-		if (plvelx > 0 || plvelx < 0) {
-			plvelx = plvelx / 1.25;
+	plgr = false;
+	for (let hitbox of colliders) {
+		if (plx + plvelx + 50 > hitbox[0] && plx + plvelx < hitbox[0] + 25) {
+			if (ply + plvely + 45 > hitbox[1] && ply + plvely < hitbox[1] + 45) {
+				plvelx = 0;
+			}
 		}
+		if (plx + plvelx < hitbox[0] + 50 && plx + plvelx > hitbox[0] + 25) {
+			if (ply + plvely + 45 > hitbox[1] && ply + plvely < hitbox[1] + 45) {
+				plvelx = 0;
+			}
+		}
+		if (ply + plvely + 50 > hitbox[1] && ply + plvely < hitbox[1] + 25) {
+			if (plx + plvelx + 45 > hitbox[0] && plx + plvelx < hitbox[0] + 45) {
+				plvely = 0;
+				plgr = true;
+			}
+		}
+		if (ply + plvely < hitbox[1] + 50 && ply + plvely > hitbox[1] + 25) {
+			if (plx + plvelx + 45 > hitbox[0] && plx + plvelx < hitbox[0] + 45) {
+				plvely = 1;
+				plgr = false;
+			}
+		}
+	}
 	
 	ply += plvely;
 	plx += plvelx;
@@ -134,7 +117,7 @@ const renderlvl = function(map) {
 					rect(x*50, y*50, 50, 50);
 					break;
 				case "W":
-					fill("#FCE303");
+					fill("#C99E47");
 					noStroke();
 					rect(x*50, y*50, 50, 50);
 					break;
@@ -149,13 +132,13 @@ let levels = {
 		"---------------------------------------",
 		"---------------------------------------",
 		"---------------------------------------",
-		"-------S-------------------------------",
-		"-----------------G----------------------",
-		"--------------------------------------",
 		"---------------------------------------",
-		"-W------W----------------W-------------",
-		"--------W------W-----------------------",
-		"---G----W--W---W------------------------",
+		"-----------------------------------------",
+		"--------------------------------------",
+		"-----------W---------------------------",
+		"-S---------W--------------------------",
+		"GGG-----W--W--W----------------------",
+		"GGGGGG-----W--------------------------------",
 		"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
 	],
 };
