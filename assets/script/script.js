@@ -70,12 +70,12 @@ const player = function() {
 	for (let hitbox of colliders) {
 		if (plx + plvelx + 50 > hitbox[0] && plx + plvelx < hitbox[0] + 25) {
 			if (ply + plvely + 45 > hitbox[1] && ply + plvely < hitbox[1] + 45) {
-				plvelx = 0;
+				plvelx = -0.5;
 			}
 		}
 		if (plx + plvelx < hitbox[0] + 50 && plx + plvelx > hitbox[0] + 25) {
 			if (ply + plvely + 45 > hitbox[1] && ply + plvely < hitbox[1] + 45) {
-				plvelx = 0;
+				plvelx = 0.5;
 			}
 		}
 		if (ply + plvely + 50 > hitbox[1] && ply + plvely < hitbox[1] + 25) {
