@@ -1,10 +1,3 @@
-plx = undefined;
-ply = undefined;
-plvelx = 0;
-plvely = 0;
-plgr = false;
-currlvl = undefined;
-colliders = [];
 let howFarRight = 0
 let scrolledRight = 0
 let plx = undefined;
@@ -16,8 +9,7 @@ let goalx = undefined;
 let goaly = undefined;
 let currlvl = 0;
 let colliders = [];
-let enemies = [];
-let scrolledRight = undefined;
+let enemies = []
 
 var keys = {};
 let paused, oldVelX, oldVelY;
@@ -78,23 +70,6 @@ const player = function() {
             time = 0
         }
     }
-	
-	
-	//Move player based on keyboard inputs
-	if (plgr && (keys["32"] || keys["87"])) {
-		plvely -=7;
-		plgr = false;
-	}
-	if (keys["65"] && !keys["68"]) {
-		plvelx -= 1.5;
-	}
-	if (keys["68"] && !keys["65"]) {
-		plvelx += 1.5;
-	}
-
-	if (plvelx > 0 || plvelx < 0) {
-		plvelx = plvelx / 1.25;
-	}
     
     
     // Check and handle map colliders
