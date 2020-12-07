@@ -7,8 +7,9 @@ currlvl = undefined;
 colliders = [];
 let howFarRight = 0
 let scrolledRight = 0
-
 var keys = {};
+let paused, oldVelX, oldVelY;
+let time = 0;
 window.onkeyup = function(e) { keys[e.keyCode] = false; }
 window.onkeydown = function(e) { keys[e.keyCode] = true; }
 
@@ -30,21 +31,40 @@ const player = function() {
 
 	if (!plgr) { plvely += 0.2; }
 
-	//Move player based on keyboard inputs
-	if (plgr && (keys["32"] || keys["87"])) {
-		plvely -=7;
-		plgr = false;
-	}
-	if (keys["65"] && !keys["68"]) {
-		plvelx -= 1.5;
-	}
-	if (keys["68"] && !keys["65"]) {
-		plvelx += 1.5;
-	}
-
-	if (plvelx > 0 || plvelx < 0) {
-		plvelx = plvelx / 1.25;
-	}
+    //Move player based on keyboard inputs and not paused
+    if (!paused) {
+        time++
+        if (plgr && (keyIsDown(32) || keyIsDown(87))) {
+            plvely -=7;
+            plgr = false;
+        }
+        if (keyIsDown(65) && !keyIsDown(68)) {
+            plvelx -= 1.5;
+        }
+        if (keyIsDown(68) && !keyIsDown(65)) {
+            plvelx += 1.5;
+        }
+        if (keyIsDown(27) && time >= 50) {
+            oldVelX = plvelx
+            oldVelY = plvely
+            paused = true;
+            time = 0
+        }
+        if (plvelx > 0 || plvelx < 0) {
+            plvelx = plvelx / 1.25;
+        }
+    } else {
+        time++
+        plvelx = 0;
+        plvely = 0;
+        if (keyIsDown(27) && time >= 50) {
+            plvelx = oldVelX;
+            plvely = oldVelY;
+            paused = false
+            time = 0
+        }
+    }
+	
 	
 	plgr = false;
 	for (let hitbox of colliders) {
