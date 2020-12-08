@@ -100,7 +100,7 @@ const player = function() {
 
     if (plx + 45 > goalx && plx < goalx + 45) {
         if (ply + 45 > goaly && ply < goaly + 45) {
-            if (levels[currlvl + 1] != "") {
+            if (levels[currlvl + 1] != undefined) {
                 loadLevel(++currlvl);
             }
             else {
@@ -177,7 +177,7 @@ const renderlvl = function() {
                 case "Z":
                     fill("lightblue");
                     rect(x*50, y*50, 50, 50);
-                    colliders.push([x*50, y*50, levels[currlvl][y][x]]);
+                    colliders.push([x*50, y*50]);
                     break;
                 case "T":
                     fill("lightblue");
@@ -187,7 +187,7 @@ const renderlvl = function() {
                     fill("#4B7043");
                     rect((x*50)-50, (y*50)-200, 150, 75);
                     rect((x*50)-10, (y*50)-230, 75, 110);
-                    colliders.push([x*50, (y-4.5)*50, levels[currlvl][y][x]]);
+                    colliders.push([x*50, (y-4.5)*50]);
                     break;
                 case "C":
                     fill("#CCE3DD");
@@ -198,22 +198,22 @@ const renderlvl = function() {
                 case "0":
                     fill("lightgreen");
                     rect(x*50, y*50, 50, 50);
-                    colliders.push([x*50, y*50, levels[currlvl][y][x]]);
+                    colliders.push([x*50, y*50]);
                     break;
                 case "1":
                     fill("#82736D");
                     rect(x*50, y*50, 50, 50);
-                    colliders.push([x*50, y*50, levels[currlvl][y][x]]);
+                    colliders.push([x*50, y*50]);
                     break;
                 case "2":
                     fill("#757575");
                     rect(x*50, y*50, 50, 50);
-                    colliders.push([x*50, y*50, levels[currlvl][y][x]]);
+                    colliders.push([x*50, y*50]);
                     break;
                 case "X":
                     fill("crimson");
                     rect(x*50, y*50, 50, 50);
-                    enemies.push([x*50, y*50, levels[currlvl][y][x]]);
+                    enemies.push([x*50, y*50]);
                     break;
             }
         }
@@ -262,8 +262,5 @@ const levels = [
         "-ZS-------------G-Z-",
         "-Z----------------Z-",
         "00000000000000000000",
-    ],
-    [
-
     ],
 ];
