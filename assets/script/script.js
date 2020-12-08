@@ -1,4 +1,3 @@
-let howFarRight = 0
 let scrolledRight = 0
 let plx = undefined;
 let ply = undefined;
@@ -13,7 +12,7 @@ let enemies = []
 
 var keys = {};
 let paused, oldVelX, oldVelY;
-let time = 0;
+let pausecd = 0;
 window.onkeyup = function(e) { keys[e.keyCode] = false; }
 window.onkeydown = function(e) { keys[e.keyCode] = true; }
 
@@ -39,7 +38,7 @@ const player = function() {
 
     //Move player based on keyboard inputs and not paused
     if (!paused) {
-        time++
+        pausecd++
         if (plgr && (keyIsDown(32) || keyIsDown(87))) {
             plvely -=7;
             plgr = false;
@@ -50,27 +49,27 @@ const player = function() {
         if (keyIsDown(68) && !keyIsDown(65)) {
             plvelx += 1.5;
         }
-        if (keyIsDown(27) && time >= 50) {
+        if (keyIsDown(27) && pausecd >= 50) {
             oldVelX = plvelx
             oldVelY = plvely
             paused = true;
-            time = 0
+            pausecd = 0
         }
         if (plvelx > 0 || plvelx < 0) {
             plvelx = plvelx / 1.25;
         }
-    } else {
-        time++
+    }
+    else {
+        pausecd++
         plvelx = 0;
         plvely = 0;
-        if (keyIsDown(27) && time >= 50) {
+        if (keyIsDown(27) && pausecd >= 50) {
             plvelx = oldVelX;
             plvely = oldVelY;
             paused = false
-            time = 0
+            pausecd = 0
         }
     }
-    
     
     // Check and handle map colliders
 	plgr = false;
@@ -216,7 +215,6 @@ const renderlvl = function() {
                     rect(x*50, y*50, 50, 50);
                     enemies.push([x*50, y*50, levels[currlvl][y][x]]);
                     break;
-
             }
         }
     }
