@@ -170,6 +170,7 @@ const renderlvl = function() {
                     break;
                 case "G":
                     fill("lime");
+                    stroke("black");
                     rect(x*50, y*50, 50, 50);
                     goalx = x*50;
                     goaly = y*50;
