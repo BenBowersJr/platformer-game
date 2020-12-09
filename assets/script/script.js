@@ -1,20 +1,27 @@
 let scrolledRight = 0
-let plx = undefined;
-let ply = undefined;
-let plvelx = undefined;
-let plvely = undefined;
+let plx, ply, plvelx, plvely, goalx, goaly;
 let plgr = false;
-let goalx = undefined;
-let goaly = undefined;
 let currlvl = 0;
 let colliders = [];
 let enemies = []
+let mainMenuObj = document.querySelector('.main-menu')
+let button1 = document.querySelector('#button1')
+let button2 = document.querySelector('#button2')
+let button3 = document.querySelector('#button3')
+//this is the first one so this one is the most commented
+//create button 
+let level1Button = document.createElement('button')
+level1Button.textContent = 'Level 1'
+//this gives the button a 'onclick' event listener. then sets the currlvl value and restarts the level
+level1Button.setAttribute('onclick', "currlvl=0, restart(currlvl)")
+
+let level2Button = document.createElement('button')
+level2Button.textContent = 'Level 2'
+level2Button.setAttribute('onclick', "currlvl=1, restart(currlvl)")
 
 var keys = {};
 let paused, oldVelX, oldVelY;
 let pausecd = 0;
-window.onkeyup = function(e) { keys[e.keyCode] = false; }
-window.onkeydown = function(e) { keys[e.keyCode] = true; }
 
 function setup() {
 	createCanvas(1000, 600);
@@ -27,6 +34,54 @@ function draw() {
 	player();
 }
 
+function mainMenu() {
+    mainMenuObj.style.visibility = 'visible'
+    pausecd++
+    plvelx = 0;
+    plvely = 0;
+    if (keyIsDown(27) && pausecd >= 20) {
+        // set velocity to what it was before being paused
+        plvelx = oldVelX;
+        plvely = oldVelY;
+        //make buttons display on screen, but the main-menu class is still hidden so they cant be seen
+        button1.style.display = 'block'
+        button2.style.display = 'block'
+        button3.style.display = 'block'
+        mainMenuObj.style.visibility = 'hidden'
+        // hide buttons from other menus
+        level1Button.style.display = 'none'
+        level2Button.style.display = 'none'
+        paused = false
+        pausecd = 0
+    }
+    
+}
+
+function restart(currlvl) {
+    // this restarts the game
+    loadLevel(currlvl)
+    renderlvl(currlvl)
+    paused = false 
+    mainMenuObj.style.visibility = 'hidden'
+}
+
+function levelSelect() {
+    //hide the main menu buttons
+    button1.style.display = 'none'
+    button2.style.display = 'none'
+    button3.style.display = 'none'
+
+    //display individual level buttons
+    level1Button.style.display = 'block'
+    level2Button.style.display = 'block'
+
+
+    //add the individual level buttons
+    mainMenuObj.appendChild(level1Button);
+    mainMenuObj.appendChild(level2Button);
+
+}
+
 const player = function() {
     // Draw the player
 	fill("pink");
@@ -36,7 +91,7 @@ const player = function() {
     // Apply gravity
 	if (!plgr) { plvely += 0.2; }
 
-    //Move player based on keyboard inputs and not paused
+    //Move player based on keyboard inputs and if game is not paused
     if (!paused) {
         pausecd++
         if (plgr && (keyIsDown(32) || keyIsDown(87))) {
@@ -60,17 +115,11 @@ const player = function() {
         }
     }
     else {
-        pausecd++
-        plvelx = 0;
-        plvely = 0;
-        if (keyIsDown(27) && pausecd >= 50) {
-            plvelx = oldVelX;
-            plvely = oldVelY;
-            paused = false
-            pausecd = 0
-        }
+        mainMenu()
     }
     
+    
+
     // Check and handle map colliders
 	plgr = false;
 	for (let hitbox of colliders) {
@@ -121,7 +170,7 @@ const player = function() {
 	plx += plvelx;
 }
 
-const loadLevel = function() {
+const loadLevel = function(currlvl) {
     plvelx = 0;
     plvely = 0;
     scrolledRight = 0;
@@ -172,6 +221,7 @@ const renderlvl = function() {
                     fill("lime");
                     stroke("black");
                     rect(x*50, y*50, 50, 50);
+                    noStroke()
                     goalx = x*50;
                     goaly = y*50;
                     break;
@@ -252,16 +302,16 @@ const levels = [
     ],
     [
         "-Z----------------Z-",
+        "-Z---------C------Z-",
+        "-Z-------------C--Z-",
         "-Z----------------Z-",
-        "-Z----------------Z-",
-        "-Z----------------Z-",
-        "-Z----------------Z-",
+        "-Z----C-----------Z-",
         "-Z----------------Z-",
         "-Z----------------Z-",
         "-Z----------------Z-",
         "-Z----------------Z-",
         "-ZS-------------G-Z-",
-        "-Z----------------Z-",
+        "-Z-------T--------Z-",
         "00000000000000000000",
     ],
 ];
