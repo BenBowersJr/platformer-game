@@ -1,5 +1,8 @@
 let scrolledRight = 0
-let plx, ply, plvelx, plvely, goalx, goaly;
+let plx, ply, plvelx, plvely, goalx, goaly, paused, oldVelX, oldVelY
+let moveRight = 68
+let moveLeft = 65
+let Jump = 32
 let plgr = false;
 let currlvl = 0;
 let colliders = [];
@@ -8,19 +11,23 @@ let mainMenuObj = document.querySelector('.main-menu')
 let button1 = document.querySelector('#button1')
 let button2 = document.querySelector('#button2')
 let button3 = document.querySelector('#button3')
-//this is the first one so this one is the most commented
 //create button 
 let level1Button = document.createElement('button')
 level1Button.textContent = 'Level 1'
 //this gives the button a 'onclick' event listener. then sets the currlvl value and restarts the level
-level1Button.setAttribute('onclick', "currlvl=0, restart(currlvl)")
+level1Button.setAttribute('onclick', "currlvl=0, restart(currlvl), closeMenu()")
 
+//create level 2 button
 let level2Button = document.createElement('button')
 level2Button.textContent = 'Level 2'
-level2Button.setAttribute('onclick', "currlvl=1, restart(currlvl)")
+level2Button.setAttribute('onclick', "currlvl=1, restart(currlvl), closeMenu()")
+
+//create the button for rebinding the settings
+let rebindControlsButton = document.createElement('button')
+rebindControlsButton.textContent = 'Rebind Movement keys (currently Broken)'
+rebindControlsButton.setAttribute('onclick', 'rebindControls(), restart(currlvl), closeMenu()')
 
 var keys = {};
-let paused, oldVelX, oldVelY;
 let pausecd = 0;
 
 function setup() {
@@ -34,27 +41,61 @@ function draw() {
 	player();
 }
 
+function settings() {
+    //hide menu buttons
+    button1.style.display = 'none';
+    button2.style.display = 'none';
+    button3.style.display = 'none';
+
+    
+    rebindControlsButton.style.display = 'block'
+    mainMenuObj.appendChild(rebindControlsButton)
+
+    //if esc is pressed close menu
+    if (keyIsDown(27) && pausecd >= 20) {
+        closeMenu()
+    }
+
+}
+
+function rebindControls() {
+    moveRight = prompt('Which key would you like for moving right?').charCodeAt(0)
+    moveLeft = prompt('Which key would you like for moving left?').charCodeAt(0)
+    Jump = prompt('Which key for jumping?').charCodeAt(0)
+
+    //if esc is pressed close menu
+    if (keyIsDown(27) && pausecd >= 20) {
+        closeMenu()
+    }
+}
+
 function mainMenu() {
     mainMenuObj.style.visibility = 'visible'
     pausecd++
     plvelx = 0;
     plvely = 0;
+    //if esc is pressed close menu
     if (keyIsDown(27) && pausecd >= 20) {
-        // set velocity to what it was before being paused
-        plvelx = oldVelX;
-        plvely = oldVelY;
-        //make buttons display on screen, but the main-menu class is still hidden so they cant be seen
-        button1.style.display = 'block'
-        button2.style.display = 'block'
-        button3.style.display = 'block'
-        mainMenuObj.style.visibility = 'hidden'
-        // hide buttons from other menus
-        level1Button.style.display = 'none'
-        level2Button.style.display = 'none'
-        paused = false
-        pausecd = 0
+        closeMenu()
     }
     
+}
+
+function closeMenu() {
+    // set velocity to what it was before being paused
+    plvelx = oldVelX;
+    plvely = oldVelY;
+    //make buttons display on screen, but the main-menu class is still hidden so they cant be seen
+    button1.style.display = 'block'
+    button2.style.display = 'block'
+    button3.style.display = 'block'
+    mainMenuObj.style.visibility = 'hidden'
+    // hide buttons from other menus
+    level1Button.style.display = 'none'
+    level2Button.style.display = 'none'
+    rebindControlsButton.style.display = 'none'
+    paused = false
+    pausecd = 0
 }
 
 function restart(currlvl) {
@@ -80,6 +121,10 @@ function levelSelect() {
     mainMenuObj.appendChild(level1Button);
     mainMenuObj.appendChild(level2Button);
 
+    //if esc is pressed close menu
+    if (keyIsDown(27) && pausecd >= 20) {
+        closeMenu()
+    }
 }
 
 const player = function() {
@@ -94,14 +139,14 @@ const player = function() {
     //Move player based on keyboard inputs and if game is not paused
     if (!paused) {
         pausecd++
-        if (plgr && (keyIsDown(32) || keyIsDown(87))) {
+        if (plgr && (keyIsDown(87))) {
             plvely -=7;
             plgr = false;
         }
-        if (keyIsDown(65) && !keyIsDown(68)) {
+        if (keyIsDown(65)) {
             plvelx -= 1.5;
         }
-        if (keyIsDown(68) && !keyIsDown(65)) {
+        if (keyIsDown(68)) {
             plvelx += 1.5;
         }
         if (keyIsDown(27) && pausecd >= 50) {
@@ -301,17 +346,17 @@ const levels = [
         "11100000222XXX222200000000000000",
     ],
     [
-        "-Z----------------Z-",
-        "-Z---------C------Z-",
-        "-Z-------------C--Z-",
-        "-Z----------------Z-",
-        "-Z----C-----------Z-",
-        "-Z----------------Z-",
-        "-Z----------------Z-",
-        "-Z----------------Z-",
-        "-Z----------------Z-",
-        "-ZS-------------G-Z-",
-        "-Z-------T--------Z-",
-        "00000000000000000000",
+        "-Z------------------------------Z-",
+        "-Z-----------------------C------Z-",
+        "-Z---------------------------C--Z-",
+        "-Z------------------------------Z-",
+        "-Z----C-------------------------Z-",
+        "-Z------------------------------Z-",
+        "-Z------------------------------Z-",
+        "-Z------------------------------Z-",
+        "-Z------------------------------Z-",
+        "-ZS---------------------------G-Z-",
+        "-Z-------------T----------------Z-",
+        "0000000000000000000000000000000000",
     ],
 ];
