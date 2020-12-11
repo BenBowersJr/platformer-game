@@ -21,6 +21,9 @@ level1Button.setAttribute('onclick', "currlvl=0, restart(currlvl), closeMenu()")
 let level2Button = document.createElement('button')
 level2Button.textContent = 'Level 2'
 level2Button.setAttribute('onclick', "currlvl=1, restart(currlvl), closeMenu()")
+let level3Button = document.createElement('button')
+level3Button.textContent = 'Level 3'
+level3Button.setAttribute('onclick', "currlvl=2, restart(currlvl), closeMenu()")
 
 //create the button for rebinding the settings
 let rebindControlsButton = document.createElement('button')
@@ -93,6 +96,7 @@ function closeMenu() {
     // hide buttons from other menus
     level1Button.style.display = 'none'
     level2Button.style.display = 'none'
+    level3Button.style.display = 'none'
     rebindControlsButton.style.display = 'none'
     paused = false
     pausecd = 0
@@ -115,11 +119,13 @@ function levelSelect() {
     //display individual level buttons
     level1Button.style.display = 'block'
     level2Button.style.display = 'block'
+    level3Button.style.display = 'block'
 
 
     //add the individual level buttons
     mainMenuObj.appendChild(level1Button);
     mainMenuObj.appendChild(level2Button);
+    mainMenuObj.appendChild(level3Button);
 
     //if esc is pressed close menu
     if (keyIsDown(27) && pausecd >= 20) {
@@ -195,7 +201,7 @@ const player = function() {
     if (plx + 45 > goalx && plx < goalx + 45) {
         if (ply + 45 > goaly && ply < goaly + 45) {
             if (levels[currlvl + 1] != undefined) {
-                loadLevel(++currlvl);
+                loadLevel(currlvl++);
             }
             else {
                 // GAME WON!!!
@@ -306,11 +312,14 @@ const renderlvl = function() {
                     rect(x*50, y*50, 50, 50);
                     colliders.push([x*50, y*50]);
                     break;
-                case "X":
+                case "L":
                     fill("crimson");
                     rect(x*50, y*50, 50, 50);
                     enemies.push([x*50, y*50]);
                     break;
+                case "|":
+                    fill('lightblue')
+                    rect(x*50, y*50,50,50)
             }
         }
     }
@@ -327,36 +336,52 @@ const renderlvl = function() {
 // 0 = Grass
 // 1 = Dirt
 // 2 = Stone
-// X = BAD
+// X = Lava
+// | = Page Scrolling Point, this renders as clear blue sky. mainly for ease of making levels
+// 9 tiles = max length jump
 
 
 const levels = [
 	[
-		"-Z----------------------------Z-",
-		"-Z------C---------------C-----Z-",
-		"-Z--C-------------------------Z-",
-		"-Z-------------C--------------Z-",
-		"-Z------------------------C---Z-",
-		"-Z----------------------------Z-",
-		"-Z----------------------------Z-",
-		"-Z------------2---------------Z-",
-		"TZ------------22--------------Z-",
-		"00--------2---22---------G----Z-",
-		"1000-S---22---222--T--------T-Z-",
-        "11100000222XXX222200000000000000",
+		"-Z---------------|-----------|Z-",
+		"-Z------C--------|------C----|Z-",
+		"-Z--C------------|-----------|Z-",
+		"-Z-------------C-|-----------|Z-",
+		"-Z---------------|--------C--|Z-",
+		"-Z---------------|-----------|Z-",
+		"-Z---------------|-----------|Z-",
+		"-Z------------2--|-----------|Z-",
+		"TZ------------22-|-----------|Z-",
+		"00--------2---22-|--------G--|Z-",
+		"1000-S---22---222|-T--------T|Z-",
+        "11100000222LLL222200000000000000",
     ],
     [
-        "-Z------------------------------Z-",
-        "-Z-----------------------C------Z-",
-        "-Z---------------------------C--Z-",
-        "-Z------------------------------Z-",
-        "-Z----C-------------------------Z-",
-        "-Z------------------------------Z-",
-        "-Z------------------------------Z-",
-        "-Z------------------------------Z-",
-        "-Z------------------------------Z-",
-        "-ZS---------------------------G-Z-",
-        "-Z-------------T----------------Z-",
-        "0000000000000000000000000000000000",
+        "-Z-------------C---|-----------|-----------|----------Z-",
+        "-Z-C---------------|-----------|-----------|----------Z-",
+        "-Z-----------------|-----------|-----------|----------Z-",
+        "-Z-----C--------C--|-----------|-----------|----------Z-",
+        "-Z-----------------|-----------|-----------|----------Z-",
+        "-Z-------------C---|-----------|-----------|----------Z-",
+        "-Z-----------------|--------222222222222222222--------Z-",
+        "-Z-----------------|-----2-----|-----------|L2--------Z-",
+        "-Z-----------------|----22-----|-----------|L2-------GZ-",
+        "11-S---------------|---222-----|-----------|L2--------Z-",
+        "211----------------|--2222-----|-----------|L2--------Z-",
+        "2222222LLL2LLLLL2222222222222222222222222222222222222222",
+    ],
+    [
+		"-Z---------------------------Z-",
+		"-Z------C---------------C----Z-",
+		"-Z--C------------------------Z-",
+		"-Z-------------C-------------Z-",
+		"-Z------------------------C--Z-",
+		"-Z---------------------------Z-",
+		"-Z---------------------------Z-",
+		"-Z--------------2------------Z-",
+		"-Z--------------22-----------Z-",
+		"00--------2-----22---------G-Z-",
+		"1000-S---22-----222--T-------Z-",
+        "11100000222LLLLL222200000000000000",
     ],
 ];
