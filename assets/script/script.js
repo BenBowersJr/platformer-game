@@ -16,14 +16,15 @@ let level1Button = document.createElement('button')
 level1Button.textContent = 'Level 1'
 //this gives the button a 'onclick' event listener. then sets the currlvl value and restarts the level
 level1Button.setAttribute('onclick', "currlvl=0, restart(currlvl), closeMenu()")
-
-//create level 2 button
 let level2Button = document.createElement('button')
 level2Button.textContent = 'Level 2'
 level2Button.setAttribute('onclick', "currlvl=1, restart(currlvl), closeMenu()")
 let level3Button = document.createElement('button')
 level3Button.textContent = 'Level 3'
 level3Button.setAttribute('onclick', "currlvl=2, restart(currlvl), closeMenu()")
+let level4Button = document.createElement('button')
+level4Button.textContent = 'Level 4'
+level4Button.setAttribute('onclick', "currlvl=3, restart(currlvl), closeMenu()")
 
 //create the button for rebinding the settings
 let rebindControlsButton = document.createElement('button')
@@ -97,6 +98,7 @@ function closeMenu() {
     level1Button.style.display = 'none'
     level2Button.style.display = 'none'
     level3Button.style.display = 'none'
+    level4Button.style.display = 'none'
     rebindControlsButton.style.display = 'none'
     paused = false
     pausecd = 0
@@ -120,12 +122,14 @@ function levelSelect() {
     level1Button.style.display = 'block'
     level2Button.style.display = 'block'
     level3Button.style.display = 'block'
+    level4Button.style.display = 'block'
 
 
     //add the individual level buttons
     mainMenuObj.appendChild(level1Button);
     mainMenuObj.appendChild(level2Button);
     mainMenuObj.appendChild(level3Button);
+    mainMenuObj.appendChild(level4Button);
 
     //if esc is pressed close menu
     if (keyIsDown(27) && pausecd >= 20) {
@@ -339,22 +343,23 @@ const renderlvl = function() {
 // X = Lava
 // | = Page Scrolling Point, this renders as clear blue sky. mainly for ease of making levels
 // 9 tiles = max length jump
+// W = WIN
 
 
 const levels = [
 	[
-		"-Z---------------|-----------|Z-",
-		"-Z------C--------|------C----|Z-",
-		"-Z--C------------|-----------|Z-",
-		"-Z-------------C-|-----------|Z-",
-		"-Z---------------|--------C--|Z-",
-		"-Z---------------|-----------|Z-",
-		"-Z---------------|-----------|Z-",
-		"-Z------------2--|-----------|Z-",
-		"TZ------------22-|-----------|Z-",
-		"00--------2---22-|--------G--|Z-",
-		"1000-S---22---222|-T--------T|Z-",
-        "11100000222LLL222200000000000000",
+		"-Z-----------------|-----------|Z-",
+		"-Z------C----------|------C----|Z-",
+		"-Z--C--------------|-----------|Z-",
+		"-Z---------------C-|-----------|Z-",
+		"-Z-----------------|--------C--|Z-",
+		"-Z-----------------|-----------|Z-",
+		"-Z-----------------|-----------|Z-",
+		"-Z--------------2--|-----------|Z-",
+		"TZ--------------22-|-----------|Z-",
+		"00--------2-----22-|--------G--|Z-",
+		"1000-S---22-----222|-T--------T|Z-",
+        "11100000222LLLLL222200000000000000",
     ],
     [
         "-Z-------------C---|-----------|-----------|----------Z-",
@@ -368,20 +373,35 @@ const levels = [
         "-Z-----------------|----22-----|-----------|L2-------GZ-",
         "11-S---------------|---222-----|-----------|L2--------Z-",
         "211----------------|--2222-----|-----------|L2--------Z-",
-        "2222222LLL2LLLLL2222222222222222222222222222222222222222",
+        "2222222LLLLLLLLL2222222222222222222222222222222222222222",
     ],
     [
-		"-Z---------------------------Z-",
-		"-Z------C---------------C----Z-",
-		"-Z--C------------------------Z-",
-		"-Z-------------C-------------Z-",
-		"-Z------------------------C--Z-",
-		"-Z---------------------------Z-",
-		"-Z---------------------------Z-",
-		"-Z--------------2------------Z-",
-		"-Z--------------22-----------Z-",
-		"00--------2-----22---------G-Z-",
-		"1000-S---22-----222--T-------Z-",
-        "11100000222LLLLL222200000000000000",
+		"-Z------------------------------------|Z-",
+		"-Z-----G------------------------------|Z-",
+		"-Z------00----------------------------|Z-",
+		"-Z------------------------------------|Z-",
+		"-Z--------L---00---00-----------------|Z-",
+		"-Z--------L---------------------------|Z-",
+		"-Z---------------------00-------------|Z-",
+		"-Z------------------------------------|Z-",
+		"-Z--------L--------L-------00---------|Z-",
+		"-Z--S-----L--------L------------------|Z-",
+		"0000000000----00----000000000000000000|Z-",
+		"1111111110----------011111111111111111111",
+		"0000000000LLLLLLLLLL000000000000000000000",
     ],
+    [
+        "-Z--------------T-----T00002222222222222222222222222222222222222",
+        "-Z----------T-00000000001111122222222222222222222222222222222222",
+        "-Z---------00001111111111122222222222222122222222222222222222222",
+        "-Z---------11111222222222222222222222222222222222222222222222222",
+        "-Z-----------222222222222222222222222222222222222222222222222222",
+        "-Z-------------22222222---2222---2222---222222222222222222222222",
+        "-Z----------------2222L---L22L---L22L---L22222222222222222222222",
+        "-Z----------------------L------L------L------W222222222222222222",
+        "-Z---------12222222222222222222222222222222222222222222222222222",
+        "-Z--------112222222222222222222222222222222222222222222222222222",
+        "-T-S----T1122222222222222222222222222222222222222222222222222222",
+        "0000000001222222222222222222222222222222222222222222222222222222"
+    ]
 ];
