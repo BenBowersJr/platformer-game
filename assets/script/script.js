@@ -11,7 +11,6 @@ let lvlWonArray = [];
 let mainMenuObj = document.querySelector('.main-menu');
 let button1 = document.querySelector('#button1');
 let button2 = document.querySelector('#button2');
-let button3 = document.querySelector('#button3');
 let gameWonText = document.querySelector('p');
 gameWonText.style.display = 'none';
 
@@ -19,25 +18,19 @@ gameWonText.style.display = 'none';
 let level1Button = document.createElement('button');
 level1Button.textContent = 'Level 1';
 //this gives the button a 'onclick' event listener. then sets the currlvl value and restarts the level
-level1Button.setAttribute('onclick', "currlvl=0, restart(currlvl), closeMenu()");
-
+level1Button.setAttribute('onclick', "currlvl=0, closeMenu(), restart(currlvl)");
 let level2Button = document.createElement('button');
 level2Button.textContent = 'Level 2';
-level2Button.setAttribute('onclick', "currlvl=1, restart(currlvl), closeMenu()");
+level2Button.setAttribute('onclick', "currlvl=1, closeMenu(), restart(currlvl)");
 let level3Button = document.createElement('button');
 level3Button.textContent = 'Level 3';
-level3Button.setAttribute('onclick', "currlvl=2, restart(currlvl), closeMenu()");
+level3Button.setAttribute('onclick', "currlvl=2, closeMenu(), restart(currlvl)");
 let level4Button = document.createElement('button');
 level4Button.textContent = 'Level 4';
-level4Button.setAttribute('onclick', "currlvl=3, restart(currlvl), closeMenu()");
+level4Button.setAttribute('onclick', "currlvl=3, closeMenu(), restart(currlvl)");
 let level5Button = document.createElement('button');
 level5Button.textContent = 'Level 5';
-level5Button.setAttribute('onclick', "currlvl=4, restart(currlvl), closeMenu()");
-
-//create the button for rebinding the settings
-let rebindControlsButton = document.createElement('button');
-rebindControlsButton.textContent = 'Rebind Movement keys (currently Broken)';
-rebindControlsButton.setAttribute('onclick', 'rebindControls(), restart(currlvl), closeMenu()');
+level5Button.setAttribute('onclick', "currlvl=4, closeMenu(), restart(currlvl)");
 
 var keys = {};
 let pausecd = 0;
@@ -51,34 +44,6 @@ function setup() {
 function draw() {
     if (currlvl != -1) { renderlvl(levels[currlvl]); }
 	player();
-}
-
-function settings() {
-    //hide menu buttons
-    button1.style.display = 'none';
-    button2.style.display = 'none';
-    button3.style.display = 'none';
-
-    
-    rebindControlsButton.style.display = 'block';
-    mainMenuObj.appendChild(rebindControlsButton);
-
-    //if esc is pressed close menu
-    if (keyIsDown(27) && pausecd >= 20) {
-        closeMenu();
-    }
-
-}
-
-function rebindControls() {
-    moveRight = prompt('Which key would you like for moving right?').charCodeAt(0);
-    moveLeft = prompt('Which key would you like for moving left?').charCodeAt(0);
-    Jump = prompt('Which key for jumping?').charCodeAt(0);
-
-    //if esc is pressed close menu
-    if (keyIsDown(27) && pausecd >= 20) {
-        closeMenu();
-    }
 }
 
 function mainMenu() {
@@ -100,7 +65,6 @@ function closeMenu() {
     //make buttons display on screen, but the main-menu class is still hidden so they cant be seen
     button1.style.display = 'block';
     button2.style.display = 'block';
-    button3.style.display = 'block';
     mainMenuObj.style.visibility = 'hidden';
     // hide buttons from other menus
     level1Button.style.display = 'none';
@@ -108,7 +72,6 @@ function closeMenu() {
     level3Button.style.display = 'none';
     level4Button.style.display = 'none';
     level5Button.style.display = 'none';
-    rebindControlsButton.style.display = 'none';
     gameWonText.style.display = 'none';
     paused = false;
     pausecd = 0;
@@ -117,8 +80,7 @@ function closeMenu() {
 function restart(currlvl) {
     // this restarts the game
     loadLevel(currlvl);
-    renderlvl(currlvl);
-    paused = false ;
+    paused = false;
     mainMenuObj.style.visibility = 'hidden';
 }
 
@@ -126,16 +88,14 @@ function levelSelect() {
     //hide the main menu buttons
     button1.style.display = 'none';
     button2.style.display = 'none';
-    button3.style.display = 'none';
 
-    
-    level1Button.style.display = 'none';
+    // hide all other buttons
     level2Button.style.display = 'none';
     level3Button.style.display = 'none';
     level4Button.style.display = 'none';
     level5Button.style.display = 'none';
 
-    //display individual level buttons
+    //display individual level buttons if they completed the level
     for (let lev of lvlWonArray) {
         if (lev === 0) {
             level1Button.style.display = 'block';
@@ -155,6 +115,7 @@ function levelSelect() {
     mainMenuObj.appendChild(level2Button);
     mainMenuObj.appendChild(level3Button);
     mainMenuObj.appendChild(level4Button);
+    mainMenuObj.appendChild(level5Button);
 
     //if esc is pressed close menu
     if (keyIsDown(27) && pausecd >= 20) {
@@ -232,10 +193,10 @@ const player = function() {
             if (levels[currlvl + 1] != undefined) {
                 lvlWonArray.push(currlvl);
                 loadLevel(++currlvl);
-            }
-            else {
-                paused = true;
-                gameWonText.style.display = 'block';
+            } else if (currlvl === 4) {
+                lvlWonArray.push(currlvl);
+                gameWonText.style.display = 'block'
+                mainMenu()
             }
         }
     }
