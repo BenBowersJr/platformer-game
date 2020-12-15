@@ -1,6 +1,8 @@
 body {
 	margin: 5rem;
 	display: flex;
+	align-items: center;
+	flex-direction: column;
 	justify-content: center;
 }
 main {
@@ -19,4 +21,7 @@ main {
 button {
 	margin-top: 50px;
 	padding: 10px;
+}
+p {
+	font-size: 2em;
 }
