@@ -135,14 +135,17 @@ const player = function() {
     //Move player based on keyboard inputs and if game is not paused
     if (!paused) {
         pausecd++
-        if (plgr && (keyIsDown(87))) {
+        // jump if space, w, or upArrow is pressed
+        if (plgr && (keyIsDown(87) || keyIsDown(38) || keyIsDown(32))) {
             plvely -=7;
             plgr = false;
         }
-        if (keyIsDown(65)) {
+        // move left if a key, or leftArrow is pressed
+        if (keyIsDown(65) || keyIsDown(37)) {
             plvelx -= 1.5;
         }
-        if (keyIsDown(68)) {
+        //move right if d key or rightArrow is pressed
+        if (keyIsDown(68) || keyIsDown(39)) {
             plvelx += 1.5;
         }
         if (keyIsDown(27) && pausecd >= 50) {
@@ -151,6 +154,7 @@ const player = function() {
             paused = true;
             pausecd = 0;
         }
+        //this adds drag/friction
         if (plvelx > 0 || plvelx < 0) {
             plvelx = plvelx / 1.25;
         }
